@@ -59,7 +59,7 @@ current_java_version = run_command('javac -version').match(/javac (\d+)\.\d+\.\d
 puts "Current Java Version: #{current_java_version}"
 
 if ac_selected_java_version == current_java_version
-	abort_with0("Current Java version is already the same as the selected Java version, #{ac_selected_java_version}.")
+	abort_with0("Skipping this step as the current Java version is already the selected version: #{ac_selected_java_version}.")
 end
 
 puts "Changing default Java version from #{current_java_version} to selected #{ac_selected_java_version}."
