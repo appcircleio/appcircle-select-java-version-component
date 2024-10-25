@@ -33,12 +33,22 @@ def abort_with1(message)
     exit 1
 end
 
+def get_available_java_versions()
+    available_java_versions = []
+    ["JAVA_HOME_8_X64", "JAVA_HOME_11_X64", "JAVA_HOME_17_X64", "JAVA_HOME_21_X64"].each do |java_version|
+        if get_env_variable(java_version)
+            available_java_versions << java_version.match(/\d+/)[0]
+        end
+    end
+    return available_java_versions.join(', ')
+end
+
 ac_selected_java_version = env_has_key('AC_SELECTED_JAVA_VERSION')
 puts "Selected Java version: #{ac_selected_java_version}"
 
 selected_java_version = get_env_variable("JAVA_HOME_#{ac_selected_java_version}_X64")
 if !selected_java_version
-  abort_with1("Java version #{selected_java_version} is not available on the runner.")
+  abort_with1("Java version #{selected_java_version} is not available on the runner. Available Java versions: #{get_available_java_versions()}.")
 end
 
 current_java_version = run_command('javac -version').match(/javac (\d+)\.\d+\.\d+/)[1]
