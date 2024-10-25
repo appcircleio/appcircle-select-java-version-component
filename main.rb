@@ -34,13 +34,11 @@ def abort_with1(message)
 end
 
 def get_available_java_versions()
-    available_java_versions = []
-    ["JAVA_HOME_8_X64", "JAVA_HOME_11_X64", "JAVA_HOME_17_X64", "JAVA_HOME_21_X64"].each do |java_version|
-        if get_env_variable(java_version)
-            available_java_versions << java_version.match(/\d+/)[0]
-        end
+    available_java_versions = [8, 11, 17, 21]
+    available_java_versions.each do |java_version|
+        available_java_versions.delete(java_version) unless get_env_variable("JAVA_HOME_#{java_version}_X64")
     end
-    return available_java_versions.join(', ')
+    available_java_versions.join(', ')
 end
 
 ac_selected_java_version = env_has_key('AC_SELECTED_JAVA_VERSION')
