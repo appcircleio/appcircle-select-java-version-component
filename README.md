@@ -6,4 +6,4 @@ If your runner is self-hosted, ensure that the selected Java version is availabl
 
 ## Required Input Variables
 
-- `$AC_SELECTED_JAVA_VERSION`: Select the Java version to switch to.
+- `$AC_SELECTED_JAVA_VERSION`: Select the Java version to switch to. If the selected version is not available on the runner, an error will occur. [Check available Java versions for your runner](https://docs.appcircle.io/infrastructure/android-build-infrastructure#java-version).
