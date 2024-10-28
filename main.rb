@@ -25,11 +25,6 @@ def run_command(command)
 	end
 end
 
-def abort_with0(message)
-  puts "@@[error] #{message}"
-  exit 0
-end
-
 def abort_with1(message)
 	puts "@@[error] #{message}"
 	exit 1
@@ -59,7 +54,8 @@ current_java_version = run_command('javac -version').match(/javac (\d+)\.\d+\.\d
 puts "Current Java Version: #{current_java_version}"
 
 if ac_selected_java_version == current_java_version
-	abort_with0("Skipping this step as the current Java version is already the selected version: #{ac_selected_java_version}.")
+	puts "Skipping this step as the current Java version is already the selected version: #{ac_selected_java_version}."
+	exit 0
 end
 
 puts "Changing default Java version from #{current_java_version} to selected #{ac_selected_java_version}."
