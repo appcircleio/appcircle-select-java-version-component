@@ -69,6 +69,6 @@ open(ENV['AC_ENV_FILE_PATH'], 'a') { |f|
 }
 
 run_command("bash -l -c \"source '#{sdkman_dir}/bin/sdkman-init.sh' && sdk default java $(basename #{selected_java_version})\"")
-run_command("javac --version")
+run_command("javac -version")
 
 get_info_msg("New Java version (JAVA_HOME) path: #{selected_java_version}.")
