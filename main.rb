@@ -1,4 +1,9 @@
 require 'open3'
+require 'colored'
+
+def get_info_msg(message)
+	puts " \n#{message.green}"
+end
 
 def get_env_variable(key)
   return (ENV[key] == nil || ENV[key] == "") ? nil : ENV[key]
@@ -12,7 +17,7 @@ def env_has_key(key)
 end
 
 def run_command(command)
-	puts "@@[command] Executing: #{command}"
+	puts "@@[command] #{command}"
 	stdout_str, stderr_str, status = Open3.capture3(command)
 
 	if status.success?
@@ -26,12 +31,12 @@ def run_command(command)
 end
 
 def abort_with1(message)
-	puts "@@[error] #{message}"
+	puts "@@[error] #{message}".red
 	exit 1
 end
 
 def get_available_java_versions()
-	all_java_versions = [8, 11, 17, 21, 23]
+	all_java_versions = [8, 11, 17, 21]
 	available_java_versions = []
 
 	all_java_versions.each do |java_version|
@@ -54,8 +59,8 @@ current_java_version = run_command('javac -version').match(/javac (\d+)\.\d+\.\d
 puts "Current Java Version: #{current_java_version}"
 
 if ac_selected_java_version == current_java_version
-	puts "Skipping this step as the current Java version is already the selected version: #{ac_selected_java_version}."
-	exit 0
+	puts "Current Java version is already the same as the selected Java version: #{ac_selected_java_version}.".yellow
+  exit 0
 end
 
 puts "Changing default Java version from #{current_java_version} to selected #{ac_selected_java_version}."
@@ -63,5 +68,7 @@ open(ENV['AC_ENV_FILE_PATH'], 'a') { |f|
 	f.puts "JAVA_HOME=#{selected_java_version}"
 }
 
-run_command("source '#{sdkman_dir}/bin/sdkman-init.sh' && sdk default java $(basename #{selected_java_version})")
-puts "New Java version: #{ac_selected_java_version}."
+run_command("bash -l -c \"source '#{sdkman_dir}/bin/sdkman-init.sh' && sdk default java $(basename #{selected_java_version})\"")
+run_command("javac --version")
+
+get_info_msg("New Java version (JAVA_HOME) path: #{selected_java_version}.")
