@@ -1,4 +1,4 @@
-# Appcircle Change Java Version
+# Appcircle Select Java Version
 
 This step switches to the selected Java version during the build process. 
 
