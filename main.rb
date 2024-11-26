@@ -74,7 +74,7 @@ if !selected_java_version
 end
 
 current_java_version = get_java_version()
-puts "Current Java Version: #{current_java_version.blue}"
+puts "Current Java version: #{current_java_version.blue}"
 
 if ac_selected_java_version == current_java_version
 	puts "Current Java version is already the same as the selected Java version: #{ac_selected_java_version}.".yellow
