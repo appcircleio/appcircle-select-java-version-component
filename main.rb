@@ -37,9 +37,15 @@ def run_command_with_log(command)
   end
 end
 
-def get_java_version()
+def get_java_version(full_version: false)
 	output = run_command('javac -version')
-	output.match(/javac (\d+)\.\d+\.\d+/)[1]
+	version = output.match(/javac (\d+)(\.\d+\.\d+)?/)
+
+	if full_version
+		return "#{version[1]}#{version[2]}"
+	end
+	
+	return version[1]
 end
 
 def abort_with1(message)
@@ -82,4 +88,4 @@ open(ENV['AC_ENV_FILE_PATH'], 'a') { |f|
 
 run_command_with_log("bash -l -c \"source '#{sdkman_dir}/bin/sdkman-init.sh' && sdk default java $(basename #{selected_java_version})\"")
 
-get_info_msg("New Java version: #{get_java_version()}")
+get_info_msg("New Java version: #{get_java_version(full_version: true)}")
