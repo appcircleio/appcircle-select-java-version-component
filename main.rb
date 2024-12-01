@@ -62,7 +62,6 @@ end
 
 sdkman_dir = env_has_key('SDKMAN_DIR')
 ac_selected_java_version = env_has_key('AC_SELECTED_JAVA_VERSION')
-puts "Selected Java version: #{ac_selected_java_version.blue}"
 
 selected_java_version = get_env_variable("JAVA_HOME_#{ac_selected_java_version}_X64")
 unless selected_java_version
@@ -70,18 +69,20 @@ unless selected_java_version
 end
 
 current_java_version = get_java_version
-puts "Current Java version: #{current_java_version.blue}"
+
+puts "Current (default) Java version: #{current_java_version.blue}"
+puts "Selected Java version: #{ac_selected_java_version.blue}"
 
 if ac_selected_java_version == current_java_version
-  puts "Current Java version is already the same as the selected Java version: #{ac_selected_java_version}.".yellow
+  puts 'The current Java version is already the same as the selected Java version.'.yellow
   exit 0
 end
 
-puts "Changing default Java version from #{current_java_version.blue} to selected #{ac_selected_java_version.blue}."
+puts "Changing the default Java version from #{current_java_version.blue} to #{ac_selected_java_version.blue}."
 open(ENV['AC_ENV_FILE_PATH'], 'a') do |f|
   f.puts "JAVA_HOME=#{selected_java_version}"
 end
 
 run_command_with_log("bash -l -c \"source '#{sdkman_dir}/bin/sdkman-init.sh' && sdk default java $(basename #{selected_java_version})\"")
 
-get_info_msg("New Java version: #{get_java_version(full_version: true)}")
+get_info_msg("Java version: #{get_java_version(full_version: true)}")
