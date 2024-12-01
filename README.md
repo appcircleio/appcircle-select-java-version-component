@@ -1,9 +1,9 @@
 # Appcircle Select Java Version
 
-This step switches to the selected Java version during the build process. 
+This step switches to the selected Java version during the build process.
 
-If your runner is self-hosted, ensure that the selected Java version is available in your environment. If not, you must install the required version before this step.
+If your runner is self-hosted, ensure that the selected Java version is available in your runner environment. If not, you must install the required version before this step.
 
 ## Required Input Variables
 
-- `$AC_SELECTED_JAVA_VERSION`: Select the Java version to switch to. If the selected version is not available on the runner, an error will occur. [Check available Java versions for your runner](https://docs.appcircle.io/infrastructure/android-build-infrastructure#java-version).
+- `$AC_SELECTED_JAVA_VERSION`: Select the Java version to switch to. If the selected version is not available on the runner, an error will occur. Check available Java versions for the Appcircle cloud-hosted runners [here](https://docs.appcircle.io/infrastructure/android-build-infrastructure#java-version).
