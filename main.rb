@@ -80,29 +80,31 @@ def switch_sdkman_java(sdkman_dir, java_home)
   end
 end
 
-sdkman_dir = env_has_key('SDKMAN_DIR')
-ac_selected_java_version = env_has_key('AC_SELECTED_JAVA_VERSION')
+if __FILE__ == $PROGRAM_NAME
+  sdkman_dir = env_has_key('SDKMAN_DIR')
+  ac_selected_java_version = env_has_key('AC_SELECTED_JAVA_VERSION')
 
-selected_java_version = get_env_variable("JAVA_HOME_#{ac_selected_java_version}_X64")
-unless selected_java_version
-  abort_with1("Java version #{ac_selected_java_version} is not available on the runner. Available Java versions: #{get_available_java_versions}.")
+  selected_java_version = get_env_variable("JAVA_HOME_#{ac_selected_java_version}_X64")
+  unless selected_java_version
+    abort_with1("Java version #{ac_selected_java_version} is not available on the runner. Available Java versions: #{get_available_java_versions}.")
+  end
+
+  current_java_version = get_java_version
+
+  puts "Current (default) Java version: #{current_java_version.blue}"
+  puts "Selected Java version: #{ac_selected_java_version.blue}"
+
+  if ac_selected_java_version == current_java_version
+    puts 'The current Java version is already the same as the selected Java version.'.yellow
+    exit 0
+  end
+
+  puts "Changing the default Java version from #{current_java_version.blue} to #{ac_selected_java_version.blue}."
+  switch_sdkman_java(sdkman_dir, selected_java_version)
+
+  open(ENV['AC_ENV_FILE_PATH'], 'a') do |f|
+    f.puts "JAVA_HOME=#{selected_java_version}"
+  end
+
+  get_info_msg("Java version: #{get_java_version(full_version: true)}")
 end
-
-current_java_version = get_java_version
-
-puts "Current (default) Java version: #{current_java_version.blue}"
-puts "Selected Java version: #{ac_selected_java_version.blue}"
-
-if ac_selected_java_version == current_java_version
-  puts 'The current Java version is already the same as the selected Java version.'.yellow
-  exit 0
-end
-
-puts "Changing the default Java version from #{current_java_version.blue} to #{ac_selected_java_version.blue}."
-switch_sdkman_java(sdkman_dir, selected_java_version)
-
-open(ENV['AC_ENV_FILE_PATH'], 'a') do |f|
-  f.puts "JAVA_HOME=#{selected_java_version}"
-end
-
-get_info_msg("Java version: #{get_java_version(full_version: true)}")
